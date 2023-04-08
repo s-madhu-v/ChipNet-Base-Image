@@ -1,10 +1,18 @@
-FROM python:3.9-alpine
+FROM alpine:edge
+LABEL maintainer="Surisetti Madhu Vamsi <xpdbymadhu@gmail.com>"
 
-RUN apk update
-RUN apk add openssh
-
-WORKDIR /app
-
+# add openssh and clean
+RUN apk add --update openssh \
+&& rm  -rf /tmp/* /var/cache/apk/*
+# add python3
+RUN apk add python3
+# Just a temporary file
 COPY hello.txt .
+# add entrypoint script
+ADD docker-entrypoint.sh /usr/local/bin
+#make sure we get fresh keys
+RUN rm -rf /etc/ssh/ssh_host_rsa_key /etc/ssh/ssh_host_dsa_key
 
-CMD ["python", "-m", "http.server", "8000"]
+EXPOSE 22
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["/usr/sbin/sshd","-D"]
