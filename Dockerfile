@@ -20,6 +20,8 @@ ADD docker-entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 #make sure we get fresh keys
 RUN rm -rf /etc/ssh/ssh_host_rsa_key /etc/ssh/ssh_host_dsa_key
+# enable root login of ssh
+RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
 EXPOSE 22
 ENTRYPOINT ["docker-entrypoint.sh"]
