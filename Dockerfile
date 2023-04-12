@@ -2,7 +2,9 @@ FROM alpine:edge
 LABEL maintainer="Surisetti Madhu Vamsi <xpdbymadhu@gmail.com>"
 
 ARG PASSWORD
+ARG NGROK_AUTH_KEY
 RUN echo "root:${PASSWORD}" | chpasswd
+RUN echo "${NGROK_AUTH_KEY}" > /ngrok_auth.txt
 # add openssh and clean
 RUN apk add --update openssh \
 && rm  -rf /tmp/* /var/cache/apk/*
@@ -16,7 +18,7 @@ RUN python3 -m ensurepip --upgrade
 # RUN chmod +x /usr/local/bin/ngrok
 RUN python3 -m pip install pyngrok
 # Just a temporary file
-COPY hello.txt .
+COPY ngrok-service.py .
 # add entrypoint script
 ADD docker-entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
@@ -28,4 +30,4 @@ RUN echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
 
 EXPOSE 22
 ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["/usr/sbin/sshd","-D"]
+CMD ["python3", "/ngrok-service.py"]

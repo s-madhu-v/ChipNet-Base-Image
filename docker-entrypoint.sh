@@ -14,4 +14,8 @@ if [ ! -d "/var/run/sshd" ]; then
   mkdir -p /var/run/sshd
 fi
 
+python3 /ngrok-service.py $1&
+
+/usr/sbin/sshd -D&
+
 exec "$@"
