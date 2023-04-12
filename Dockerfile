@@ -9,10 +9,11 @@ RUN apk add --update openssh \
 # add python3
 RUN apk add python3
 # install ngrok
-RUN wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
-RUN tar -xzvf ngrok-v3-stable-linux-amd64.tgz
-RUN mv ngrok /usr/local/bin/ngrok
-RUN chmod +x /usr/local/bin/ngrok
+# RUN wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
+# RUN tar -xzvf ngrok-v3-stable-linux-amd64.tgz
+# RUN mv ngrok /usr/local/bin/ngrok
+# RUN chmod +x /usr/local/bin/ngrok
+pip3 install pyngrok
 # Just a temporary file
 COPY hello.txt .
 # add entrypoint script
