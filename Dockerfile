@@ -10,15 +10,17 @@ RUN apk add --update openssh \
 && rm  -rf /tmp/* /var/cache/apk/*
 # add python3
 RUN apk add python3
-RUN python3 -m ensurepip --upgrade
+RUN apk add curl
 # install ngrok
-# RUN wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
-# RUN tar -xzvf ngrok-v3-stable-linux-amd64.tgz
-# RUN mv ngrok /usr/local/bin/ngrok
-# RUN chmod +x /usr/local/bin/ngrok
-RUN python3 -m pip install pyngrok
+RUN wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
+RUN tar -xzvf ngrok-v3-stable-linux-amd64.tgz
+RUN mv ngrok /usr/local/bin/ngrok
+RUN chmod +x /usr/local/bin/ngrok
+# RUN python3 -m ensurepip --upgrade
+# RUN python3 -m pip install pyngrok
 # Just a temporary file
-COPY ngrok-service.py .
+COPY start-ngrok.sh .
+RUN ngrok config add-authtoken ${NGROK_AUTH_KEY}
 # add entrypoint script
 ADD docker-entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
@@ -30,4 +32,4 @@ RUN echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
 
 EXPOSE 22
 ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["python3", "/ngrok-service.py"]
+CMD ["/usr/sbin/sshd", "-D"]
