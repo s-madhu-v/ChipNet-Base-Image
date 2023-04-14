@@ -14,6 +14,6 @@ if [ ! -d "/var/run/sshd" ]; then
   mkdir -p /var/run/sshd
 fi
 
-# source /start-ngrok.sh 22
+source /start-ngrok.sh 22
 
 exec "$@"
