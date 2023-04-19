@@ -20,6 +20,7 @@ RUN chmod +x /usr/local/bin/ngrok
 # RUN python3 -m pip install pyngrok
 # Just a temporary file
 COPY start-ngrok.sh .
+COPY stop-ngrok.sh .
 RUN ngrok config add-authtoken ${NGROK_AUTH_KEY}
 # add entrypoint script
 ADD docker-entrypoint.sh /usr/local/bin
