@@ -19,4 +19,4 @@ done
 
 echo
 echo "NGROK_PUBLIC_URL => [ $NGROK_PUBLIC_URL ]"
-echo $NGROK_PUBLIC_URL > /access-link.txt
+echo $NGROK_PUBLIC_URL > /chipnet_comments.txt
